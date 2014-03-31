@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
+ <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 	<title>羽毛球赛事一览</title>
+	<script type="text/javascript">
+	function getJson(){
+		alert("ddd");
+		var request = new XMLHttpRequest();
+		request.open("get","data.json");
+		request.onreadystatechange = function(){
+			if(request.readyState==4&&request.status==200){
+				var objs = eval(request.responseText);
+				alert(objs[0].gameName);
+				console.log(objs[0].place);
+			}
+		}
+	}
+
+	</script>
 </head>
 <body>
-	<div class="gameList"></div>
+	<div class="gameList">
+		<p>赛事一览</p>
+		<input type="button" value="查询" onclick="getJson()" />
+	</div>
 </body>
 	
 </html>
