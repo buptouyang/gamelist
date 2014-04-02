@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+<script type="text/javascript">
+window.onload = function(){}
+
+</script>
+
+
+<style type="text/css">
+.calendar{
+  width: 500px;
+  margin: auto;
+}
+.dateTable{
+  width: 100%;
+  text-align: center;
+}
+td{
+  width: 10px;
+  height: 20px;
+}
+td:hover{
+  cursor: pointer;
+}
+#dateToday{
+  text-align:center;
+}
+
+</style>
+
+
+</head>
+<body>
+  <div class="calendar">
+    <div id="dateToday"> AAA</div>
+    <table class="dateTable"  border="1px">
+      <thead>
+        <tr>
+          <td>日</td>
+          <td>一</td>
+          <td>二</td>
+          <td>三</td>
+          <td>四</td>
+          <td>五</td>
+          <td>六</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+        </tr>
+        <tr>
+          <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+        </tr>
+        <tr>
+          <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+        </tr>
+        <tr>
+          <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+        </tr>
+        <tr>
+          <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+        </tr>
+        <tr>
+          <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
+        </tr>
+      </tbody>
+     </table>
+     <div class="gameDetail" id="gameDetail">
+       
+     </div>
+  </div>
+ 
+  
+ <script type="text/javascript">
+  var now = new Date();
+  now.setFullYear(2014,2,2);
+  var year = now.getFullYear();
+  var month = now.getMonth();
+  var date = now.getDate();  
+  var day = getFormatDay(date);
+  var tdArray= document.getElementsByTagName("td");
+  var str;
+  function getFormatDay(day){
+    switch(day){
+      case 1:return "星期一";
+      case 2:return "星期二";
+      case 3:return "星期三";
+      case 4:return "星期四";
+      case 5:return "星期五";
+      case 6:return "星期六";
+      case 7:return "星期日";
+    }
+  }
+
+//点击日期显示赛事
+for(var i=0;i<tdArray.length;i++){
+  tdArray[i].onclick=showInfo;
+}
+ 
+
+  //显示今天日期
+  document.getElementById("dateToday").innerHTML=year+"年"+month+"月"+date+"日"+day;
+ // document.getElementById("dateToday").innerHTML+=getday(); //显示一号是星期几
+
+ var dayNum;
+ dayNum=getDayNum(month);
+ 
+  for(i=0;i<dayNum;i++){
+    tdArray[getday()+7+i].innerHTML=1+i;
+  }
+
+  
+
+  //获取1号是星期几
+  function getday(){
+    var someday = new Date();
+    someday.setMonth(month);
+    someday.setDate(1);
+    return someday.getDay();
+  }
+ //判断一个月几天
+ function getDayNum(month){
+  switch(month){
+    case 1:
+    case 3:
+    case 5:
+    case 7:
+    case 8:
+    case 10:
+    case 12:return 31;
+    case 4:
+    case 6:
+    case 9:
+    case 11:return 30;
+    case 2:return 28;
+  }
+
+ }
+
+function showInfo(){
+  //alert(this.innerHTML);
+  if(this.innerHTML==""){
+    document.getElementById("gameDetail").innerHTML=""; 
+  }else{
+  var objXmlHttp = null;
+  var str;
+  function createXMLHTTP(){
+    var request = null
+    if(window.XMLHttpRequest){
+      request = new XMLHttpRequest();
+      return request;
+    }else{
+      request = new ActiveXObject("Microsoft.XMLHTTP");
+      return request;
+    }
+
+  }
+
+  objXmlHttp = createXMLHTTP();
+
+  objXmlHttp.open('GET','data.json',true);
+
+  objXmlHttp.send();
+
+  objXmlHttp.onreadystatechange = function(){
+    if(objXmlHttp.readyState == 4){
+      if(objXmlHttp.status == 200){
+        var obj = eval(objXmlHttp.responseText);
+        str = "赛事："+obj[0].name+" 时间："+obj[0].time+" 地点："+obj[0].place;
+        document.getElementById("gameDetail").innerHTML=str;   
+      }
+    }
+  }
+}
+}
+
+
+
+</script>  
+
+
+
+
+
+</body>
+
+
+
+</html>
